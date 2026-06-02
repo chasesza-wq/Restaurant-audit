@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Restaurant Growth Audit</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111;line-height:1.6}
+
+/* ── HERO ── */
+.hero{padding:64px 24px 56px;text-align:center;border-bottom:1px solid #eee;max-width:680px;margin:0 auto}
+.hero-eyebrow{font-size:8.5pt;font-family:'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#888;margin-bottom:14px}
+.hero-title{font-size:28pt;font-weight:900;color:#111;line-height:1.1;margin-bottom:16px}
+.hero-title span{color:#cc0000}
+.hero-sub{font-size:12pt;color:#444;line-height:1.65;max-width:520px;margin:0 auto 28px}
+.hero-cta{display:inline-block;background:#111;color:#fff;padding:16px 32px;border-radius:8px;font-size:12pt;font-weight:800;text-decoration:none;transition:background .15s;cursor:pointer;border:none;font-family:'Inter',sans-serif}
+.hero-cta:hover{background:#333}
+.hero-note{font-size:8.5pt;color:#aaa;margin-top:10px}
+
+/* ── STATS STRIP ── */
+.stats-strip{background:#f7f7f7;border-top:1px solid #e8e8e8;border-bottom:1px solid #e8e8e8;padding:32px 24px}
+.stats-inner{max-width:720px;margin:0 auto}
+.stats-label{text-align:center;font-size:9pt;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#888;margin-bottom:20px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stat-card{background:#fff;border:1.5px solid #e0e0e0;border-radius:8px;padding:18px 16px;text-align:center;border-top:3px solid #111}
+.stat-num{font-size:22pt;font-weight:900;font-family:'JetBrains Mono',monospace;color:#111;display:block;margin-bottom:4px;line-height:1}
+.stat-num.red{color:#cc0000}
+.stat-text{font-size:9pt;color:#555;line-height:1.4}
+.stat-source{font-size:7.5pt;color:#aaa;margin-top:6px;font-style:italic}
+
+/* ── THE PROBLEM ── */
+.problem{max-width:680px;margin:0 auto;padding:56px 24px}
+.section-label{font-size:8.5pt;font-family:'JetBrains Mono',monospace;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-bottom:10px}
+.section-title{font-size:20pt;font-weight:900;color:#111;line-height:1.2;margin-bottom:16px}
+.section-body{font-size:11pt;color:#444;line-height:1.7;margin-bottom:20px}
+.problem-items{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.prob-item{background:#fafafa;border:1.5px solid #e8e8e8;border-radius:6px;padding:14px 16px;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;border-left:4px solid #cc0000}
+.prob-icon{font-size:14pt;line-height:1.3}
+.prob-text{font-size:10pt;color:#333;line-height:1.5}
+.prob-text strong{color:#111}
+
+/* ── MOCK AUDIT ── */
+.mock-section{background:#f4f4f4;border-top:1px solid #eee;border-bottom:1px solid #eee;padding:56px 24px}
+.mock-inner{max-width:580px;margin:0 auto}
+.mock-intro{text-align:center;margin-bottom:28px}
+.mock-card{background:#fff;border:1.5px solid #ddd;border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.mock-header{background:#111;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+.mock-header-title{font-size:10pt;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+.mock-header-badge{font-size:8pt;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:3px 10px;border-radius:12px;font-family:'JetBrains Mono',monospace}
+.mock-body{padding:22px}
+.mock-restaurant{font-size:9pt;color:#888;font-family:'JetBrains Mono',monospace;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #eee}
+.mock-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:5px;margin-bottom:6px;background:#fafafa;border:1px solid #eee}
+.mock-row-label{font-size:9.5pt;color:#333;display:flex;align-items:center;gap:8px}
+.mock-row-icon{font-size:11pt}
+.mock-row-value{font-size:10.5pt;font-weight:700;font-family:'JetBrains Mono',monospace;color:#cc0000}
+.mock-divider{height:1px;background:#eee;margin:14px 0}
+.mock-total-row{display:flex;justify-content:space-between;align-items:center;padding:14px 12px;background:#111;border-radius:6px}
+.mock-total-label{font-size:10pt;font-weight:700;color:#fff}
+.mock-total-value{position:relative}
+.mock-blur{font-size:18pt;font-weight:900;font-family:'JetBrains Mono',monospace;color:#fff;filter:blur(7px);user-select:none;letter-spacing:2px}
+.mock-unlock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.mock-unlock-btn{background:#fff;color:#111;font-size:7.5pt;font-weight:800;font-family:'Inter',sans-serif;padding:4px 10px;border-radius:4px;white-space:nowrap;cursor:pointer;text-decoration:none;letter-spacing:.03em}
+.mock-footnote{text-align:center;font-size:8.5pt;color:#888;margin-top:12px;font-style:italic}
+
+/* ── HOW IT WORKS ── */
+.how{max-width:680px;margin:0 auto;padding:56px 24px}
+.steps{display:flex;flex-direction:column;gap:0}
+.step-row{display:grid;grid-template-columns:44px 1fr;gap:0}
+.step-line-col{display:flex;flex-direction:column;align-items:center}
+.step-dot{width:30px;height:30px;border-radius:50%;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9.5pt;font-weight:800;font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.step-connector{width:2px;background:#e0e0e0;flex:1;min-height:16px}
+.step-row:last-child .step-connector{display:none}
+.step-content{padding:0 0 20px 14px;padding-top:3px}
+.step-title{font-size:11pt;font-weight:700;color:#111;margin-bottom:3px}
+.step-desc{font-size:9.5pt;color:#555;line-height:1.5}
+
+/* ── OBJECTION KILLS ── */
+.objections{background:#f7f7f7;border-top:1px solid #eee;border-bottom:1px solid #eee;padding:48px 24px}
+.obj-inner{max-width:620px;margin:0 auto}
+.obj-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.obj-card{background:#fff;border:1.5px solid #e0e0e0;border-radius:7px;padding:14px 16px}
+.obj-q{font-size:9.5pt;font-weight:700;color:#555;margin-bottom:5px}
+.obj-a{font-size:9.5pt;color:#333;line-height:1.5}
+
+/* ── BOTTOM CTA ── */
+.bottom-cta{max-width:600px;margin:0 auto;padding:64px 24px;text-align:center}
+.bottom-cta-title{font-size:22pt;font-weight:900;color:#111;line-height:1.15;margin-bottom:12px}
+.bottom-cta-sub{font-size:11pt;color:#555;line-height:1.6;margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
+.bottom-cta-btn{display:inline-block;background:#111;color:#fff;padding:16px 36px;border-radius:8px;font-size:12pt;font-weight:800;text-decoration:none;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:background .15s}
+.bottom-cta-btn:hover{background:#333}
+.bottom-cta-note{font-size:8.5pt;color:#aaa;margin-top:12px}
+
+/* ── BOOKING FORM ── */
+.book-section{background:#f4f4f4;border-top:2px solid #111;padding:56px 24px}
+.book-inner{max-width:480px;margin:0 auto;text-align:center}
+.book-title{font-size:20pt;font-weight:900;color:#111;line-height:1.2;margin-bottom:8px}
+.book-sub{font-size:10.5pt;color:#555;margin-bottom:28px;line-height:1.5}
+.book-form{background:#fff;border:1.5px solid #ddd;border-radius:10px;padding:28px;text-align:left}
+.form-field{margin-bottom:16px}
+.form-label{font-size:9pt;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px}
+.form-input{width:100%;padding:13px 14px;border:1.5px solid #ddd;border-radius:7px;font-family:'Inter',sans-serif;font-size:11pt;color:#111;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.form-input:focus{border-color:#111}
+.slots-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.slot-btn{padding:11px 8px;border:1.5px solid #ddd;border-radius:7px;background:#fff;font-family:'Inter',sans-serif;font-size:9pt;font-weight:600;color:#555;cursor:pointer;text-align:center;transition:all .15s;line-height:1.3}
+.slot-btn:hover{border-color:#111;color:#111}
+.slot-btn.selected{background:#111;border-color:#111;color:#fff}
+.form-submit{width:100%;padding:16px;background:#111;color:#fff;border:none;border-radius:7px;font-family:'Inter',sans-serif;font-size:12pt;font-weight:800;cursor:pointer;margin-top:8px;transition:background .15s}
+.form-submit:hover{background:#333}
+.form-submit:disabled{background:#ccc;cursor:not-allowed}
+.form-note{font-size:8.5pt;color:#aaa;text-align:center;margin-top:10px}
+.success-msg{display:none;text-align:center;padding:24px}
+.success-icon{font-size:32pt;margin-bottom:12px}
+.success-title{font-size:15pt;font-weight:800;color:#111;margin-bottom:6px}
+.success-sub{font-size:10pt;color:#555}
+/* ── FOOTER ── */
+.footer{border-top:1px solid #eee;padding:20px 24px;text-align:center;font-size:8.5pt;color:#aaa;font-family:'JetBrains Mono',monospace}
+
+@media(max-width:520px){
+  .hero-title{font-size:21pt}
+  .stats-grid{grid-template-columns:1fr}
+  .obj-grid{grid-template-columns:1fr}
+  .mock-header{flex-direction:column;gap:6px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Free · 20 Minutes · No Pitch</div>
+  <h1 class="hero-title">43% of Restaurant Calls<br>Go Unanswered.<br><span>Is Yours One of Them?</span></h1>
+  <p class="hero-sub">"The phone just kept ringing. We couldn't even touch it." Sound familiar? We'll show you exactly what that's costing your restaurant — your specific number — in 20 minutes, free.</p>
+  <a href="https://calendly.com/YOUR_HANDLE/restaurant-audit" class="hero-cta" id="cta1">Show Me My Numbers →</a>
+  <div class="hero-note">20 minutes · Free · No sales pitch · Your actual numbers, not estimates</div>
+</div>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stats-label">What the data says about restaurants like yours</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-num red">43%</span>
+        <div class="stat-text">of restaurant calls go <strong>completely unanswered</strong> — especially between 5pm and 8pm.</div>
+        <div class="stat-source">Source: QSR Magazine / Breez / Hostie AI industry study</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num red">1 in 3</span>
+        <div class="stat-text">callers ever tries again after no answer. <strong>The other 2 book somewhere else.</strong></div>
+        <div class="stat-source">Source: Restaurant call behavior research</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num red">30%</span>
+        <div class="stat-text">average commission taken by delivery apps <strong>on every single order.</strong> Direct orders keep 100%.</div>
+        <div class="stat-source">Source: National Restaurant Association</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<div class="problem">
+  <div class="section-label">Where the money goes</div>
+  <h2 class="section-title">Your Restaurant Has Revenue Leaks You Can't See — Yet</h2>
+  <p class="section-body">"Answering the phone doesn't make us any money. It's just a problem." We hear that from owners constantly. The thing is — <em>not</em> answering it costs more. Here's where the money actually goes.</p>
+  <div class="problem-items">
+    <div class="prob-item">
+      <div class="prob-icon">📞</div>
+      <div class="prob-text"><strong>The Phone During Rush Hour</strong><br>Every call that goes to voicemail during dinner service is a potential reservation that just walked to your competitor. At your check size, even 5 missed calls a day adds up to a number that'll surprise you.</div>
+    </div>
+    <div class="prob-item">
+      <div class="prob-icon">💬</div>
+      <div class="prob-text"><strong>Instagram & Social DMs</strong><br>Guests are asking about reservations, hours, and events in your DMs right now. If the reply takes more than 2 hours, most move on. You'd be shocked how much business happens — or doesn't — in the comment section.</div>
+    </div>
+    <div class="prob-item">
+      <div class="prob-icon">🔁</div>
+      <div class="prob-text"><strong>Guests Who Never Come Back</strong><br>65% of restaurant revenue comes from repeat customers. If you have no system to bring them back — no follow-up, no loyalty, no reminder — you're starting from zero every single week.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MOCK AUDIT -->
+<div class="mock-section">
+  <div class="mock-inner">
+    <div class="mock-intro">
+      <div class="section-label" style="text-align:center">What the audit looks like</div>
+      <h2 class="section-title" style="text-align:center;font-size:17pt">Here's a Sample Audit from a Restaurant Like Yours</h2>
+      <p style="font-size:10pt;color:#555;text-align:center;margin-top:8px">Every line item is real. The total? That's specific to your restaurant — you'll get yours on the call.</p>
+    </div>
+
+    <div class="mock-card">
+      <div class="mock-header">
+        <div class="mock-header-title">RESTAURANT GROWTH AUDIT</div>
+        <div class="mock-header-badge">SAMPLE · 45-SEAT CASUAL DINING</div>
+      </div>
+      <div class="mock-body">
+        <div class="mock-restaurant">Generated for: [Your Restaurant] · City, State · Est. 80 covers/day</div>
+
+        <div class="mock-row">
+          <div class="mock-row-label"><span class="mock-row-icon">📞</span> Missed calls / month (est.)</div>
+          <div class="mock-row-value">~186 calls</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-label"><span class="mock-row-icon">💸</span> Revenue lost to missed calls</div>
+          <div class="mock-row-value">$2,340/mo</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-label"><span class="mock-row-icon">💬</span> Unanswered DMs / month (est.)</div>
+          <div class="mock-row-value">~60 DMs</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-label"><span class="mock-row-icon">💸</span> Revenue lost to slow DM replies</div>
+          <div class="mock-row-value">$720/mo</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-label"><span class="mock-row-icon">🔁</span> Repeat guest recovery gap</div>
+          <div class="mock-row-value">$890/mo</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-label"><span class="mock-row-icon">📦</span> Delivery app margin bleed</div>
+          <div class="mock-row-value">$1,200/mo</div>
+        </div>
+
+        <div class="mock-divider"></div>
+
+        <div class="mock-total-row">
+          <div class="mock-total-label">Total Monthly Revenue Opportunity</div>
+          <div class="mock-total-value">
+            <div class="mock-blur">$5,150</div>
+            <div class="mock-unlock">
+              <a href="https://calendly.com/YOUR_HANDLE/restaurant-audit" class="mock-unlock-btn" id="cta2">Get My Number →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mock-footnote">Numbers above are illustrative. Your actual audit is calculated from your specific volume, check size, and operation.</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+  <div class="section-label">The process</div>
+  <h2 class="section-title" style="margin-bottom:24px">What Happens on the Call</h2>
+  <div class="steps">
+    <div class="step-row">
+      <div class="step-line-col"><div class="step-dot">1</div><div class="step-connector"></div></div>
+      <div class="step-content">
+        <div class="step-title">We ask 4 questions about your operation</div>
+        <div class="step-desc">Covers per day, average check, how you handle phones during rush, and whether you're on any delivery platforms. That's it — takes under 3 minutes.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-line-col"><div class="step-dot">2</div><div class="step-connector"></div></div>
+      <div class="step-content">
+        <div class="step-title">We calculate your specific revenue leak — live</div>
+        <div class="step-desc">Using your actual numbers, we show you exactly what each gap is costing you per month. You'll see the breakdown by channel: calls, DMs, repeat guests, and delivery margins.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-line-col"><div class="step-dot">3</div><div class="step-connector"></div></div>
+      <div class="step-content">
+        <div class="step-title">We show you how to close each gap</div>
+        <div class="step-desc">Not a generic pitch — a specific recommendation based on your numbers. If there's a fit, we'll tell you. If there isn't, we'll tell you that too. 20 minutes total.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OBJECTION KILLS -->
+<div class="objections">
+  <div class="obj-inner">
+    <div style="text-align:center">
+      <div class="section-label">Common questions</div>
+      <h2 class="section-title" style="font-size:17pt">What restaurant owners ask before booking</h2>
+    </div>
+    <div class="obj-grid">
+      <div class="obj-card">
+        <div class="obj-q">"Is this actually free?"</div>
+        <div class="obj-a">Yes. 20 minutes, no charge. We run the numbers and show you what we find. If there's no fit, we'll tell you straight.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-q">"Are you going to pitch me something?"</div>
+        <div class="obj-a">Only if the math makes sense for you. The audit might show your leaks are small — in which case you don't need us. We'd rather tell you that than waste your time.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-q">"I already have someone handling this."</div>
+        <div class="obj-a">Then the audit will confirm it. If everything's covered, great — you'll have data that backs it up. Takes 20 minutes either way.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-q">"I'm too busy right now."</div>
+        <div class="obj-a">The busy season is exactly when you're losing the most to missed calls and DMs. 20 minutes now could change what a busy week looks like every week after.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- BOOKING FORM -->
+<div class="book-section" id="book">
+  <div class="book-inner">
+    <div class="book-title">Pick a Time.<br>We'll Handle the Rest.</div>
+    <p class="book-sub">Name, phone number, and when works for you. That's it. We'll confirm within the hour.</p>
+
+    <div class="calendly-inline-widget" data-url="https://calendly.com/chase-sza/30min?hide_gdpr_banner=1&primary_color=111111" style="min-width:280px;height:700px;border-radius:10px;overflow:hidden;"></div>
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  </div>
+</div>
+
+<div class="footer">Alex · AI Agency · Free Restaurant Growth Audit</div>
+
+<script>
+document.querySelectorAll('#cta1,#cta2,#cta3,.mock-unlock-btn').forEach(el => {
+  el.href = '#book';
+  el.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('book').scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+
+<script>
+const CALENDLY = ""; // Paste your Calendly link here
+
+document.querySelectorAll('#cta1,#cta2,#cta3,.mock-unlock-btn').forEach(el => {
+  if (CALENDLY) {
+    el.href = CALENDLY;
+    el.target = "_blank";
+  } else {
+    el.href = "#book";
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('book').scrollIntoView({behavior:'smooth'});
+    });
+  }
+});
+</script>
+</body>
+</html>
